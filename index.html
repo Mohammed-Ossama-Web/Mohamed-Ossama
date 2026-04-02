@@ -170,7 +170,13 @@
       letter-spacing: -2px;
       overflow: hidden;
     }
-    /* Initials pulse */
+    /* Profile photo */
+    .avatar-photo {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      border-radius: 50%;
+    }
+    /* Initials pulse (fallback) */
     .avatar-initials {
       animation: pulse 2.5s ease-in-out infinite;
     }
@@ -251,33 +257,6 @@
       line-height: 1.8;
       color: #cbd5e1;
       animation: fadeUp 1.4s .8s both;
-    }
-
-    /* ───── STATS ───── */
-    .stats {
-      display: flex; gap: 0;
-      margin: 28px 0;
-      animation: fadeUp 1.4s .9s both;
-    }
-    .stat {
-      flex: 1;
-      padding: 16px 8px;
-      border-right: 1px solid rgba(255,255,255,.08);
-      transition: transform .3s;
-    }
-    .stat:last-child { border-right: none; }
-    .stat:hover { transform: translateY(-4px); }
-    .stat-num {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 22px; font-weight: 700;
-      background: linear-gradient(135deg, #7c3aed, #06b6d4);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .stat-label {
-      font-size: 11px; color: #64748b;
-      text-transform: uppercase; letter-spacing: 2px; margin-top: 2px;
     }
 
     /* ───── SOCIAL HEADING ───── */
@@ -495,7 +474,13 @@
       <div class="avatar-ring"></div>
       <div class="avatar-ring-inner"></div>
       <div class="avatar">
-        <span class="avatar-initials">MO</span>
+        <img
+          src="https://raw.githubusercontent.com/Mohammed-Ossama-Web/Mohamed-Ossama/main/5e4eb159-b1b9-4ca2-b549-6431ae007428.jpeg"
+          alt="Mohamed Ossama"
+          class="avatar-photo"
+          onerror="this.style.display='none';document.getElementById('av-initials').style.display='flex'"
+        />
+        <span class="avatar-initials" id="av-initials" style="display:none">MO</span>
       </div>
       <div class="status-dot"></div>
     </div>
@@ -509,22 +494,6 @@
       Content creator &amp; social media enthusiast<br>
       based somewhere between the stars.
     </p>
-
-    <!-- Stats -->
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-num" data-count="7000">0</div>
-        <div class="stat-label">Followers</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num" data-count="420">0</div>
-        <div class="stat-label">Posts</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num" data-count="4">0</div>
-        <div class="stat-label">Platforms</div>
-      </div>
-    </div>
 
     <!-- Social Buttons -->
     <p class="social-heading">&#9670; Find Me On &#9670;</p>
@@ -671,28 +640,6 @@
     `;
     sf.appendChild(s);
   }
-
-  /* ── Count-up animation ── */
-  const format = n => n >= 1000 ? (n/1000).toFixed(1) + 'K' : n;
-  const counters = document.querySelectorAll('[data-count]');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      const el = entry.target;
-      const target = +el.dataset.count;
-      const dur = 1800;
-      const start = performance.now();
-      const tick = now => {
-        const progress = Math.min((now - start) / dur, 1);
-        const ease = 1 - Math.pow(1 - progress, 3);
-        el.textContent = format(Math.round(ease * target));
-        if (progress < 1) requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-      observer.unobserve(el);
-    });
-  }, { threshold: 0.5 });
-  counters.forEach(c => observer.observe(c));
 
   /* ── Particle burst on button click ── */
   document.querySelectorAll('.btn').forEach(btn => {
